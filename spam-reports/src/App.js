@@ -3,7 +3,6 @@ import {Report} from './Report'
 import axios from 'axios'
 import styled from 'styled-components'
 
-import './App.css';
 
 const AppStyle = styled.div`
   background-color: #282c34;

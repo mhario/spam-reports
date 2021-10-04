@@ -42,6 +42,10 @@ const Button = styled.button`
   width: 100%;
   padding: 3px 0;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
   &:first-of-type{
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -70,16 +74,17 @@ const MessageBox = styled.div`
 `
 
 export const Report = ({report}) => {
-  console.log("Report -> report", report);
+
   const [ saving, setSaving ] = useState(false)
-  const [ blocked, setBlocked ] = useState(false)
+  const [ blocked, setBlocked ] = useState(report.blocked)
+  const [ resolved, setResolved ] = useState(report.state === 'CLOSED')
 
   const block = async () => {
     setSaving(true)
-    const res = await axios.put(`/reports/block/${report.payload.referenceResourceId}`)
+    const res = await axios.put(`/reports/block/${report.id}`)
 
-    const { success } = res
-    if ( success ) {
+    const { data } = res
+    if ( data.success ) {
       setBlocked(true)
       setSaving(false)
     }
@@ -90,9 +95,10 @@ export const Report = ({report}) => {
     const res = await axios.put(`/reports/${report.id}`, 
       {ticketState: 'CLOSED'}
     )
-    const { success } = res
-    console.log('data   ', res);
-    if ( success ) {
+
+    const { data } = res
+    if ( data.success ) {
+      setResolved(true)
       setSaving(false)
     }
     
@@ -104,10 +110,10 @@ export const Report = ({report}) => {
         Id: <Id>{report.id}</Id>
         <Overview>
           <span>
-            State: {report.state}
+            State: {resolved && 'CLOSED' || report.state}
           </span>
           <span>
-            Blocked?: { report.blocked ? 'YES' : 'NO' }
+            Blocked?: { (report.blocked || blocked) ? 'YES' : 'NO' }
           </span>
         </Overview>
         <Details>
@@ -124,9 +130,9 @@ export const Report = ({report}) => {
         >{ saving ? '...' : 'Block' }</Button>
         <Button
           onClick={resolve}
-          disabled={saving}
+          disabled={resolved || saving}
         >{ saving ? '...' : 'Resolve' }</Button>
-        <Link href="javascript:void(0);">Details...</Link>
+        <Link href="">Details...</Link>
       </Options>
     </ReportCard>
   )

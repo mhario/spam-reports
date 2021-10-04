@@ -4,15 +4,16 @@ var router = express.Router()
 var fs = require('fs')
 const reports = require('./reports.json')
 
-const getReport = id => reports.elements.find(rep => rep.id === id)
-const writeUpdate = fs.writeFileSync('./server/reports.json', JSON.stringify(reports))
+const getReport = id => console.log(id) || reports.elements.find(rep => rep.id === id)
+function writeUpdate() {
+  fs.writeFileSync('./server/reports.json', JSON.stringify(reports))
+} 
 
 router.get('/getAll', function(req, res) {
   res.send(reports)
 })
 
 router.put('/block/:reportId', function(req, res) {
-
   const target = getReport(req.params.reportId)
 
   if (target) {
