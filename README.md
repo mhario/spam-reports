@@ -1,3 +1,13 @@
+# Mark Hario Coding Challenge Submission
+
+To Run: `npm start & npm run server`
+
+
+Thank you for your consideration!
+
+- Mark
+
+--- 
 # Example Full-Stack Challenge
 
 We're excited that you're interested in performing the coding challenge.

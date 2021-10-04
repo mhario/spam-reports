@@ -110,7 +110,7 @@ export const Report = ({report}) => {
         Id: <Id>{report.id}</Id>
         <Overview>
           <span>
-            State: {resolved && 'CLOSED' || report.state}
+            State: {(resolved && 'CLOSED') || report.state}
           </span>
           <span>
             Blocked?: { (report.blocked || blocked) ? 'YES' : 'NO' }
