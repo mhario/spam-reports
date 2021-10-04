@@ -10,11 +10,13 @@ const AppStyle = styled.div`
 `
 
 const Header = styled.header`
-
+  color: #fafafa;
+  text-align: center;
+  padding-top: 40px;
 `
 
 const Body = styled.main`
-  padding: 4rem 0;
+  padding: 2rem 0;
 `
 
 function App() {
@@ -48,12 +50,16 @@ function App() {
   
   return (
     <AppStyle>
-      <header>
-      </header>
+      <Header>
+        <h1>
+        Spam Dash
+
+        </h1>
+      </Header>
       <Body>
         {reports.map(rep => (
-          console.log('rendering report', rep) || <Report report={rep} />
-        ))}
+          <Report report={rep} key={rep.id} /> )
+        )}
       </Body>
     </AppStyle>
   );
