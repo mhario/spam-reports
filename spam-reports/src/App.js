@@ -1,25 +1,45 @@
 import { useEffect, useState } from 'react';
+import {Report} from './Report'
+import axios from 'axios'
+import styled from 'styled-components'
+
 import './App.css';
+
+const AppStyle = styled.div`
+  background-color: #282c34;
+`
+
+const Header = styled.header`
+
+`
+
+const Body = styled.main`
+  padding: 4rem 0;
+`
 
 function App() {
   const [ reports, setReports ] = useState([])
-  const pullData = () => {
-    // const res = await axios.get('/reports/getAll')
-    // console.log('res is ', res)
+  const pullData = async () => {
+    const res = await axios.get('/reports/getAll')
 
-    fetch('/reports/getAll', {
-      method: 'GET', // *GET, POST, PUT, DELETE, etc.
-      // mode: 'cors', // no-cors, *cors, same-origin
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(response => response.json())
-    .then(json => {
-      if ( json.elements ) {
-        setReports(json.elements)
-      }
-    })
+    if (res?.data?.elements?.length) {
+      setReports(res?.data?.elements)
+    }
+    console.log('res is ', res)
+
+    // fetch('/reports/getAll', {
+    //   method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    //   // mode: 'cors', // no-cors, *cors, same-origin
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    // })
+    // .then(response => response.json())
+    // .then(json => {
+    //   if ( json.elements ) {
+    //     setReports(json.elements)
+    //   }
+    // })
 
   }
   useEffect(() => {
@@ -27,16 +47,15 @@ function App() {
   }, [])
   
   return (
-    <div className="App">
-      <header className="App-header">
-        {reports.map(rep => (
-          <div style={{color: 'white'}}>
-            {rep.id}
-            {rep.state}
-          </div>
-        ))}
+    <AppStyle>
+      <header>
       </header>
-    </div>
+      <Body>
+        {reports.map(rep => (
+          console.log('rendering report', rep) || <Report report={rep} />
+        ))}
+      </Body>
+    </AppStyle>
   );
 }
 

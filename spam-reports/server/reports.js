@@ -11,9 +11,13 @@ router.get('/getAll', function(req, res) {
 })
 
 router.put('/:reportId', function(req, res) {
-  console.log(req.body)
+  const target = reports.elements.find(rep => rep.id === req.params.reportId)
+
+  target.state = req.body.ticketState
   
-  res.sendStatus(200)
+  fs.writeFileSync('./server/reports.json', JSON.stringify(reports))
+
+  res.sendStatus(202)
 })
 
 module.exports = router
